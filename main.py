@@ -59,7 +59,6 @@ while running:
             lines = []
             for snake in snakes:
                 snake.restart()
-        else:
             continue
 
     for snake in snakes:
