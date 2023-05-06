@@ -3,13 +3,6 @@ import random
 
 import settings
 
-SPEED_PER_FRAME = 5
-ANGLE_DELTA = 10
-LINE_WIDTH = 5
-
-HOLE_FREQUENCY_RANGE = (100, 200)
-HOLE_WIDTH_RANGE = (2, 6)
-
 
 class SnakeDeath(Exception):
     """Thrown if snake dies"""
@@ -27,27 +20,27 @@ class Snake:
         self.screen = screen
         self.clock = clock
         self.death = False
-        self.hole = random.randint(*HOLE_FREQUENCY_RANGE)
-        self.hole_width = random.randint(*HOLE_WIDTH_RANGE)
+        self.hole = random.randint(*settings.HOLE_FREQUENCY_RANGE)
+        self.hole_width = random.randint(*settings.HOLE_WIDTH_RANGE)
 
     def drive(self, keys, lines):
         if keys[self.left_key]:
-            self.angle += ANGLE_DELTA
+            self.angle += settings.ANGLE_DELTA
         if keys[self.right_key]:
-            self.angle -= ANGLE_DELTA
+            self.angle -= settings.ANGLE_DELTA
 
-        speed = self.clock.tick(60) / SPEED_PER_FRAME
+        speed = self.clock.tick(60) / settings.SPEED_PER_FRAME
         nx = self.x + speed * math.cos(math.radians(-self.angle))
         ny = self.y + speed * math.sin(math.radians(-self.angle))
 
         self.check(nx, ny)
 
         if self.hole >= 0:
-            lines.append((self.screen, self.color, (self.x, self.y), (nx, ny), LINE_WIDTH))
+            lines.append((self.screen, self.color, (self.x, self.y), (nx, ny), settings.LINE_WIDTH))
 
         if self.hole == -self.hole_width:
-            self.hole = random.randint(*HOLE_FREQUENCY_RANGE)
-            self.hole_width = random.randint(*HOLE_WIDTH_RANGE)
+            self.hole = random.randint(*settings.HOLE_FREQUENCY_RANGE)
+            self.hole_width = random.randint(*settings.HOLE_WIDTH_RANGE)
 
         self.x = nx
         self.y = ny
